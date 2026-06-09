@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdatomic.h>
+#include <assert.h>
 
 #define HISTORY 32768
 
@@ -18,12 +19,13 @@ void data_callback(ma_device* pDevice,
 {
     const float* samples = pInput;
 
-    for (ma_uint32 i = 0; i < frameCount * 2; i += 2) {
-        float mono = 0.5f * (samples[i] + samples[i+1]);
+    for (ma_uint32 i = 0; i < frameCount; i++) {
+        float mono = samples[i];
+        
+        size_t pos = atomic_load(&wpos);
+        buffer[pos] = mono;
 
-        buffer[wpos] = mono;
-
-        wpos = (wpos + 1) % HISTORY;
+        atomic_store(&wpos, (pos + 1) & (HISTORY - 1));
     } 
     
     (void)pDevice;
@@ -32,7 +34,7 @@ void data_callback(ma_device* pDevice,
 
 void get_latest_samples(float* dst, size_t count)
 {
-    size_t pos = wpos;
+    size_t pos = atomic_load(&wpos);
 
     for (size_t i = 0; i < count; i++) {
         size_t idx =
@@ -71,11 +73,12 @@ int init_ma()
     ma_device_config config = ma_device_config_init(ma_device_type_capture);
     config.capture.pDeviceID = &pCaptureDeviceInfos[0].id;
     config.capture.format = ma_format_f32;
-    config.capture.channels = 2;
+    config.capture.channels = 1;
     config.sampleRate = 44100;
     config.dataCallback = data_callback;
 
-
+    assert(config.capture.channels == 1);
+        
     result = ma_device_init(&context, &config, &device);
     if (result != MA_SUCCESS) {
         printf("Init failed: %d\n", result);
