@@ -47,3 +47,16 @@ void apply_windowing_func(float* buffer, float* coeffs, size_t size)
     }    
 }
 
+void normalize_bars(float* bars, size_t num_bars)
+{
+    float max = 0.0f;
+    for (size_t i = 0; i < num_bars; i++)
+    {
+        max = bars[i] > max ? bars[i] : max;
+    }
+
+    for (size_t i = 0; i < num_bars; i++)
+    {
+        bars[i] /= max;
+    }
+}
