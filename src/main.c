@@ -45,7 +45,7 @@ int main()
 
     Rectangle rects[NUM_BARS];
 
-    InitWindow(screen_width, screen_height, "RE:CAVA");
+    InitWindow(screen_width, screen_height, "Prism");
     SetTargetFPS(60);
 
     init_ma();
