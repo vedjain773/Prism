@@ -32,7 +32,7 @@ fi
 # Build Raylib
 echo "Building Raylib..."
 cd libs/raylib/src
-make PLATFORM=PLATFORM_DESKTOP -DGLFW_BUILD_WAYLAND=ON
+make PLATFORM=PLATFORM_DESKTOP GLFW_LINUX_ENABLE_WAYLAND=TRUE
 cd ../../..
 
 echo "Done. Run 'make' to build Prism."

@@ -16,6 +16,23 @@ The project uses:
 * [raylib](https://www.raylib.com/)
    - As the GUI library to display the visualiser
 
+## Usage
+Clone the repository
+```bash
+git clone https://github.com/vedjain773/Prism.git && cd Prism
+```
+
+Run the installation script to install all the dependencies
+```bash
+chmod +x install.sh
+./install.sh
+```
+
+Build the project
+```bash
+make
+```
+
 ## Background
 The project is a spiritual successor of an earlier project, [spectra-view](https://github.com/vedjain773/spectra-view) which served as an educational / foundational project compared to Prism. During the development of spectra-view I pretty much wrote each part of the pipeline from scratch (WAV file parsing and decoding, DFT calculation and the rendering of the bars on the terminal) which solidified my fundamentals pretty well and taught me a lot about signal processing and encoding.
 
