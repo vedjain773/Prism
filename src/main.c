@@ -8,7 +8,7 @@
 #define FFT_SAMPLE 2048
 #define SAMPLE_RATE 44100
 
-#define NUM_BARS 64
+#define NUM_BARS 32
 #define MIN_FREQ 20.0f
 #define MAX_FREQ 20000.0f
 #define WINDOW_HEIGHT 450
@@ -33,6 +33,11 @@ int main()
     compute_bar_bins(bar_start_bin, NUM_BARS, &config);
 
     float bars[NUM_BARS];
+    float prev_bars[NUM_BARS];
+    float peak_bars[NUM_BARS];
+
+    memset(prev_bars, 0.0f, NUM_BARS * sizeof(float));
+    memset(peak_bars, 0.0f, NUM_BARS * sizeof(float));
 
     float buffer[FFT_SAMPLE];
 
@@ -62,7 +67,12 @@ int main()
         
         fill_bars(magnitudes, bars, NUM_BARS, bar_start_bin, &config);
         normalize_bars(bars, NUM_BARS);
+
+        smoothen(prev_bars, bars, NUM_BARS, 0.75f);
+       
         fill_ray_rects(rects, bars, NUM_BARS, &rconfig);
+
+        apply_gravity(peak_bars, bars, NUM_BARS, 0.01f);
 
         BeginDrawing();
 
@@ -70,6 +80,8 @@ int main()
             render_rects(rects, NUM_BARS);
 
         EndDrawing();
+
+        copy_arr(bars, prev_bars, NUM_BARS); 
     }
     
     CloseWindow();

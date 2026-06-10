@@ -1,6 +1,13 @@
 #include "utils.h"
 #include <stddef.h>
 #include <math.h>
+#include <stdio.h>
+
+void copy_arr(float* src, float* dest, size_t size)
+{
+    for (size_t i = 0; i < size; i++)
+        dest[i] = src[i];
+}
 
 void remove_dc(float* buffer, size_t size)
 {
@@ -9,7 +16,7 @@ void remove_dc(float* buffer, size_t size)
     for (size_t i = 0; i < size; i++)
         sum += buffer[i];
 
-    float dc_off = sum / size;
+    float dc_off;
 
     for (size_t i = 0; i < size; i++)
         buffer[i] -= dc_off;
@@ -54,9 +61,36 @@ void normalize_bars(float* bars, size_t num_bars)
     {
         max = bars[i] > max ? bars[i] : max;
     }
+    
+    if (max > 0.0f)
+    {
+        for (size_t i = 0; i < num_bars; i++)
+        {
+            bars[i] /= max;
+        }
+    }
+}
 
+void smoothen(float* prev_bars, float* bars, size_t num_bars, float decay)
+{
     for (size_t i = 0; i < num_bars; i++)
     {
-        bars[i] /= max;
+        bars[i] = decay * prev_bars[i] + (1.00f - decay) * bars[i];
+    }
+}
+
+void apply_gravity(float* peak_bars, float* bars, size_t num_bars, float fall_speed)
+{
+    for (size_t i = 0; i < num_bars; i++) 
+    {
+        if (peak_bars[i] < bars[i])
+            peak_bars[i] = bars[i];
+        else
+            peak_bars[i] -= fall_speed;
+
+        if (peak_bars[i] < 0.0f)
+            peak_bars[i] = 0.0f;
+
+        bars[i] = peak_bars[i];
     }
 }
