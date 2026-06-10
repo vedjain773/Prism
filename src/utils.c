@@ -84,9 +84,13 @@ void apply_gravity(float* peak_bars, float* bars, size_t num_bars, float fall_sp
     for (size_t i = 0; i < num_bars; i++) 
     {
         if (peak_bars[i] < bars[i])
+        {
             peak_bars[i] = bars[i];
+        }
         else
+        {
             peak_bars[i] -= fall_speed;
+        }
 
         if (peak_bars[i] < 0.0f)
             peak_bars[i] = 0.0f;

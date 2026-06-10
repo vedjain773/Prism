@@ -47,6 +47,10 @@ int main()
     render_cfg rconfig;
 
     set_render_cfg(NUM_BARS, WINDOW_WIDTH, WINDOW_HEIGHT, 1, &rconfig);
+    set_color(BLUE, VIOLET, &rconfig);
+
+    Color color_arr[NUM_BARS];
+    set_color_arr(color_arr, NUM_BARS, &rconfig);
 
     Rectangle rects[NUM_BARS];
 
@@ -68,7 +72,7 @@ int main()
         fill_bars(magnitudes, bars, NUM_BARS, bar_start_bin, &config);
         normalize_bars(bars, NUM_BARS);
 
-        smoothen(prev_bars, bars, NUM_BARS, 0.75f);
+        smoothen(prev_bars, bars, NUM_BARS, 0.85f);
        
         fill_ray_rects(rects, bars, NUM_BARS, &rconfig);
 
@@ -77,7 +81,7 @@ int main()
         BeginDrawing();
 
             ClearBackground(RAYWHITE);
-            render_rects(rects, NUM_BARS);
+            render_rects(rects, NUM_BARS, color_arr);
 
         EndDrawing();
 
