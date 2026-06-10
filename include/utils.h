@@ -3,8 +3,6 @@
 
 #include <stddef.h>
 
-void copy_arr(float* src, float* dest, size_t size);
-
 void remove_dc(float* buffer, size_t size);
 float find_peak(float* buffer, size_t size);
 

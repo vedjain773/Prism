@@ -3,12 +3,6 @@
 #include <math.h>
 #include <stdio.h>
 
-void copy_arr(float* src, float* dest, size_t size)
-{
-    for (size_t i = 0; i < size; i++)
-        dest[i] = src[i];
-}
-
 void remove_dc(float* buffer, size_t size)
 {
     float sum = 0.0f;

@@ -85,7 +85,7 @@ int main()
 
         EndDrawing();
 
-        copy_arr(bars, prev_bars, NUM_BARS); 
+        memcpy(prev_bars, bars, NUM_BARS * sizeof(float));    
     }
     
     CloseWindow();
