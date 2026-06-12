@@ -2,7 +2,7 @@
 
 A GPU-rendered music visualizer built in C, inspired by [cava](https://github.com/karlstav/cava).
 
-![demo_screenshot](assets/screenshot.png)
+![demo_gif](assets/demo.gif)
 
 ---
 
