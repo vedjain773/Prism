@@ -14,27 +14,11 @@ fft_cfg fft_config(float sample_size, float min_freq, float max_freq, float samp
     return cfg;
 }
 
-void compute_fft(
-        kiss_fft_cfg cfg,
-        kiss_fft_cpx* in,
-        kiss_fft_cpx* out,
-        float* buffer,
-        size_t size)
-{
-    for (size_t i = 0; i < size; i++)
-    {
-        in[i].r = buffer[i];
-        in[i].i = 0.0f;
-    }
-
-    kiss_fft(cfg, in, out);
-}
-
-void compute_mags(float* mags, size_t size, kiss_fft_cpx* out)
+void compute_mags(float* mags, size_t size, Complex* out)
 {
     for (size_t i = 0; i < size; i++) 
     {
-        mags[i] = sqrtf(out[i].r * out[i].r + out[i].i * out[i].i); 
+        mags[i] = sqrtf(out[i].re * out[i].re + out[i].im * out[i].im); 
     }
 }
 

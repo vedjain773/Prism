@@ -5,12 +5,12 @@ echo "Setting up Prism dependencies..."
 
 mkdir -p libs include
 
-# KissFFT
-if [ -d "libs/kissfft" ]; then
-    echo "KissFFT already exists, skipping..."
+#cfft
+if [-d "libs/libcfft.a"]; then
+    echo "CFFT already built, skipping..."
 else
-    echo "Cloning KissFFT..."
-    git clone --depth 1 https://github.com/mborgerding/kissfft.git libs/kissfft
+    echo "Building CFFT..."
+    make lib
 fi
 
 # Raylib

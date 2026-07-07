@@ -3,6 +3,7 @@
 #include "fft.h"
 #include "raylib.h"
 #include "render.h"
+#include <string.h>
 #include <stdio.h>
 
 #define FFT_SAMPLE 2048
@@ -20,10 +21,9 @@ int main()
     float hann_coeffs[FFT_SAMPLE];
     compute_hann_coeffs(hann_coeffs, FFT_SAMPLE);
     
-    kiss_fft_cfg cfg = kiss_fft_alloc(FFT_SAMPLE, 0, NULL, NULL);
+    Complex output[FFT_SAMPLE];
 
-    kiss_fft_cpx fft_in[FFT_SAMPLE];
-    kiss_fft_cpx fft_out[FFT_SAMPLE];
+    cfft_cfg cfg = create_cfft_cfg(FFT_SAMPLE);
 
     float magnitudes[FFT_SAMPLE / 2];
 
@@ -65,9 +65,9 @@ int main()
         remove_dc(buffer, FFT_SAMPLE);
         
         apply_windowing_func(buffer, hann_coeffs, FFT_SAMPLE);
-        
-        compute_fft(cfg, fft_in, fft_out, buffer, FFT_SAMPLE);
-        compute_mags(magnitudes, FFT_SAMPLE / 2, fft_out);
+       
+        cfft_execute(&cfg, buffer, output);
+        compute_mags(magnitudes, FFT_SAMPLE / 2, output);
         
         fill_bars(magnitudes, bars, NUM_BARS, bar_start_bin, &config);
         normalize_bars(bars, NUM_BARS);
@@ -90,7 +90,7 @@ int main()
     
     CloseWindow();
     dinit_ma();
-    kiss_fft_free(cfg);
-
+    free_cfg(&cfg); 
+    
     return 0;
 }
