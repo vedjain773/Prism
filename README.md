@@ -11,10 +11,13 @@ Prism performs real-time FFT analysis on system audio and renders a smooth, loga
 The project uses:
 * [miniaudio](https://miniaud.io/docs/manual/index.html)
    - To capture background audio
-* [KissFFT](https://github.com/mborgerding/kissfft) 
-   - As a library for the fast fourier transform
 * [raylib](https://www.raylib.com/)
    - As the GUI library to display the visualiser
+
+For computing Fast Fourier transforms the project makes use of CFFT, a custom FFT static lib 
+written in C which suits the need of the project well.
+The library is a radix-2 implementation of the Cooley-Tuchey algorithm and performs similar to
+KissFFT on most platforms.
 
 ## Usage
 Clone the repository
